@@ -4,114 +4,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>พุทธชัยมงคล ๘ - The Buddha's 8 Victories</title>
-    <!-- Tailwind CSS for Styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- React and Babel for running JSX in browser -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,400;0,700;1,400&display=swap');
-        body { font-family: 'Sarabun', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+        body { font-family: 'Sarabun', sans-serif; background-color: #fdfaf5; }
         .font-serif { font-family: 'Sarabun', serif; font-weight: 700; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
-<body class="bg-[#fcf9f2]">
+<body>
     <div id="root"></div>
-
     <script type="text/babel">
         const { useState, useEffect } = React;
-
-        // Icons placeholder component for CDN usage
         const Icon = ({ name, className }) => {
-            useEffect(() => {
-                if (window.lucide) {
-                    window.lucide.createIcons();
-                }
-            }, [name]);
+            useEffect(() => { if (window.lucide) window.lucide.createIcons(); }, [name]);
             return <i data-lucide={name} className={className}></i>;
         };
 
         const victories = [
-            { id: 1, opponent: "พญามาร (Mara)", title: "ชัยชนะเหนือความกลัวและกิเลส", pali: "พาหุง สะหัสสะมะภินิมมิตะสาวุธันตัง...", story: "พญามารยกทัพมานับไม่ถ้วนเพื่อขัดขวางการตรัสรู้ พระพุทธเจ้าทรงใช้ 'บารมี' ที่สะสมมาเป็นอาวุธ จนทัพมารพ่ายแพ้ไป", lesson: "เมื่อเผชิญกับอุปสรรคใหญ่โต จงใช้ความดีและความนิ่งสยบความวุ่นวาย", icon: "shield-alert", color: "from-red-50 to-orange-100", img: "https://images.unsplash.com/photo-1590732488836-820836528994?w=600" },
-            { id: 2, opponent: "อาฬวกยักษ์ (Alavaka)", title: "ชัยชนะเหนือความโกรธและความดุร้าย", pali: "มาราติเรกะมะภิยุชฌิตะสัพพะรัตติง...", story: "อาฬวกยักษ์ผู้ดุร้ายขู่กรรโชกพระองค์ตลอดทั้งคืน แต่พระพุทธเจ้าทรงใช้ 'ความอดทน' และเมตตาจนยักษ์ยอมจำนน", lesson: "ความอดทนคือตบะอย่างยิ่งที่จะชนะคนโกรธ", icon: "flame", color: "from-orange-50 to-yellow-100", img: "https://images.unsplash.com/photo-1464802686167-b939a6910659?w=600" },
-            { id: 3, opponent: "ช้างนาฬาคิรี (Nalagiri)", title: "ชัยชนะเหนือความบ้าคลั่ง", pali: "นาฬาคิริง คะชะวะรัง อะติมัตตะภูตัง...", story: "ช้างตกมันที่ถูกมอมเหล้าวิ่งตรงเข้าทำร้าย แต่พระพุทธเจ้าทรงแผ่เมตตาจนช้างยอมสยบแทบพระบาท", lesson: "เมตตาธรรมค้ำจุนโลกและสยบความรุนแรงได้", icon: "user-x", color: "from-amber-50 to-yellow-200", img: "https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?w=600" },
-            { id: 4, opponent: "องคุลิมาล (Angulimala)", title: "ชัยชนะเหนือความรุนแรง", pali: "อุกขิตตะขัคคะมะติหัตถะสุทารุณันตัง...", story: "จอมโจรผู้ไล่ล่าตัดนิ้วคน แต่พระพุทธเจ้าทรงใช้ 'ปัญญาและเมตตา' เปลี่ยนใจโจรให้กลับใจ", lesson: "ไม่มีใครสายเกินไปที่จะกลับตัวเป็นคนดี", icon: "hand", color: "from-slate-100 to-gray-200", img: "https://images.unsplash.com/photo-1518005020251-58296d8f8d71?w=600" },
-            { id: 5, opponent: "นางจิญจมาณวิกา (Cinca)", title: "ชัยชนะเหนือคำใส่ร้าย", pali: "กัตตะวานะ กัฏฐะมุทะรัง อิวะ คัพภินียา...", story: "หญิงที่รับจ้างมากล่าวหาพระพุทธเจ้า แต่พระองค์ทรงนิ่งสงบจนความจริงปรากฏออกมาเอง", lesson: "ความจริงเป็นสิ่งไม่ตาย และความนิ่งคือคำตอบที่ดีที่สุดต่อคำนินทา", icon: "message-circle-off", color: "from-pink-50 to-rose-100", img: "https://images.unsplash.com/photo-1501139083538-0139583c060f?w=600" },
-            { id: 6, opponent: "สัจจกนิครนถ์ (Saccaka)", title: "ชัยชนะเหนือทิฐิและปัญญาโกง", pali: "สัจจัง วิหายะ มะติสัจจะกะวาทะเกตุง...", story: "นักปราชญ์ผู้เย่อหยิ่งท้าประลองปัญญา แต่ต้องยอมจำนนต่อ 'ประทีปแห่งธรรม' ที่สว่างไสวกว่า", lesson: "ปัญญาที่แท้จริงคือทางสว่าง", icon: "book-open", color: "from-blue-50 to-cyan-100", img: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=600" },
-            { id: 7, opponent: "นันโทปนันทนาคราช (Nandopananda)", title: "ชัยชนะเหนืออิทธิฤทธิ์", pali: "นันโทปะนันทะภุชะคัง วิพุธัง มะหิทธิง...", story: "พญานาคผู้มีฤทธิ์มากพยายามขัดขวาง แต่พระพุทธเจ้าทรงใช้ฤทธิ์ที่เหนือกว่าในการกำราบ", lesson: "อำนาจต้องมาพร้อมความถูกต้อง", icon: "zap", color: "from-indigo-50 to-purple-100", img: "https://images.unsplash.com/photo-1501854140801-50d01674aa3e?w=600" },
-            { id: 8, opponent: "พกาพรหม (Baka Brahma)", title: "ชัยชนะเหนืออวิชชา (ซ่อนแอบ)", pali: "ทุคคาหะทิฏฐิภุชะเคนะ สุทัฏฐะหัตถัง...", story: "พรหมท้าเล่นซ่อนแอบ พระองค์ซ่อนบนเศียรพรหมจนพรหมหาไม่พบ เพราะความยึดติดบดบังตา", lesson: "สิ่งที่อยู่ใกล้ที่สุดคือใจเรา แต่มักหาเจอได้ยากที่สุดถ้ายังมีอวิชชา", icon: "eye", color: "from-emerald-50 to-green-100", img: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=600" }
+            { id: 1, opponent: "พญามาร", title: "ชนะความกลัว", pali: "พาหุง สะหัสสะมะภินิมมิตะสาวุธันตัง...", story: "พญามารยกทัพมาขัดขวางการตรัสรู้ แต่พระองค์ทรงใช้บารมีสยบจนพ่ายแพ้", lesson: "ความดีสยบความวุ่นวาย", icon: "shield", color: "from-red-100 to-orange-100", textColor: "text-red-700" },
+            { id: 2, opponent: "อาฬวกยักษ์", title: "ชนะความโกรธ", pali: "มาราติเรกะมะภิยุชฌิตะสัพพะรัตติง...", story: "ยักษ์ดุร้ายขู่กรรโชกทั้งคืน แต่พระองค์ทรงใช้ความอดทนและเมตตาจนยอมจำนน", lesson: "ความอดทนคือตบะชั้นเลิศ", icon: "flame", color: "from-orange-100 to-yellow-100", textColor: "text-orange-700" },
+            { id: 3, opponent: "ช้างนาฬาคิรี", title: "ชนะความบ้าคลั่ง", pali: "นาฬาคิริง คะชะวะรัง อะติมัตตะภูตัง...", story: "ช้างตกมันวิ่งเข้าทำร้าย แต่พระองค์ทรงแผ่เมตตาจนช้างยอมสยบแทบพระบาท", lesson: "เมตตาธรรมสยบความรุนแรง", icon: "heart", color: "from-yellow-100 to-amber-100", textColor: "text-amber-700" },
+            { id: 4, opponent: "องคุลิมาล", title: "ชนะความโหดร้าย", pali: "อุกขิตตะขัคคะมะติหัตถะสุทารุณันตัง...", story: "จอมโจรไล่ฆ่าคน แต่พระองค์ทรงใช้ปัญญาเปลี่ยนใจโจรให้กลับตัวเป็นคนดี", lesson: "ไม่มีใครสายเกินไปที่จะเริ่มใหม่", icon: "hand", color: "from-slate-100 to-gray-200", textColor: "text-slate-700" },
+            { id: 5, opponent: "นางจิญจมาณวิกา", title: "ชนะคำใส่ร้าย", pali: "กัตตะวานะ กัฏฐะมุทะรัง อิวะ คัพภินียา...", story: "หญิงถูกจ้างมาใส่ร้ายพระองค์ แต่พระองค์ทรงนิ่งสงบจนความจริงปรากฏ", lesson: "ความนิ่งสยบข่าวลือ", icon: "message-square", color: "from-pink-100 to-rose-100", textColor: "text-pink-700" },
+            { id: 6, opponent: "สัจจกนิครนถ์", title: "ชนะทิฐิ", pali: "สัจจัง วิหายะ มะติสัจจะกะวาทะเกตุง...", story: "นักปราชญ์จอมปลอมท้าประลองปัญญา แต่ต้องยอมแพ้ต่อแสงแห่งธรรม", lesson: "ปัญญาที่แท้คือทางสว่าง", icon: "book-open", color: "from-blue-100 to-cyan-100", textColor: "text-blue-700" },
+            { id: 7, opponent: "นันโทปนันทนาคราช", title: "ชนะอิทธิฤทธิ์", pali: "นันโทปะนันทะภุชะคัง วิพุธัง มะหิทธิง...", story: "พญานาคพยายามปิดกั้นทางธรรม แต่พระองค์ทรงปราบด้วยฤทธิ์ที่เหนือกว่า", lesson: "อำนาจต้องคู่ความถูกต้อง", icon: "zap", color: "from-indigo-100 to-purple-100", textColor: "text-indigo-700" },
+            { id: 8, opponent: "พกาพรหม", title: "ชนะอวิชชา (ซ่อนแอบ)", pali: "ทุคคาหะทิฏฐิภุชะเคนะ สุทัฏฐะหัตถัง...", story: "พรหมท้าซ่อนแอบ พระองค์ซ่อนบนเศียรพรหมจนหาไม่เจอ เพราะความยึดติดบังตา", lesson: "ใจเราอยู่ใกล้ที่สุด แต่หาเจอยยากที่สุด", icon: "eye", color: "from-emerald-100 to-green-100", textColor: "text-emerald-700" }
         ];
 
         function App() {
             const [step, setStep] = useState(0);
-            const [isTransitioning, setIsTransitioning] = useState(false);
-
-            const goToStep = (s) => {
-                setIsTransitioning(true);
-                setTimeout(() => {
-                    setStep(s);
-                    setIsTransitioning(false);
-                    window.scrollTo(0, 0);
-                }, 400);
-            };
+            const goTo = (s) => { setStep(s); window.scrollTo(0,0); };
 
             return (
-                <div className="min-h-screen text-slate-800 flex flex-col items-center justify-center p-4">
-                    <div className={`max-w-3xl w-full transition-all duration-500 ${isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
+                <div className="min-h-screen flex items-center justify-center p-4">
+                    <div className="max-w-4xl w-full fade-in">
                         {step === 0 && (
-                            <div className="text-center space-y-8 py-10">
+                            <div className="text-center space-y-8 bg-white p-12 rounded-[3rem] shadow-xl border border-amber-100">
                                 <h1 className="text-5xl font-black text-slate-900 font-serif">พุทธชัยมงคล <span className="text-amber-600">๘</span></h1>
-                                <p className="text-xl text-slate-600">เรียนรู้ชัยชนะ ๘ ประการผ่านเรื่องราวสุดอัศจรรย์</p>
-                                <div className="flex justify-center">
-                                    <img src="https://images.unsplash.com/photo-1542318238-43e1bee12f7f?w=400" className="w-56 h-56 rounded-full border-8 border-white shadow-2xl object-cover" />
-                                </div>
-                                <button onClick={() => goToStep(1)} className="px-10 py-4 bg-slate-900 text-white rounded-full font-bold text-lg hover:bg-amber-600 transition-colors">เริ่มการเดินทาง</button>
+                                <p className="text-xl text-slate-600 italic">"ชัยชนะแห่งพระพุทธองค์ สู่ปัญญาในใจคุณ"</p>
+                                <div className="flex justify-center"><Icon name="sparkles" className="w-32 h-32 text-amber-400 animate-pulse" /></div>
+                                <button onClick={() => goTo(1)} className="px-12 py-4 bg-slate-900 text-white rounded-full font-bold text-xl hover:bg-amber-600 transition-all">เริ่มต้นเรียนรู้</button>
                             </div>
                         )}
-
                         {step >= 1 && step <= 8 && (
-                            <div className="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col md:flex-row">
-                                <div className="md:w-1/2 h-48 md:h-[500px] relative">
-                                    <img src={victories[step-1].img} className="absolute inset-0 w-full h-full object-cover" />
-                                    <div className="absolute inset-0 bg-black/40 flex items-end p-6 text-white">
-                                        <h2 className="text-2xl font-bold">{victories[step-1].opponent}</h2>
-                                    </div>
+                            <div className="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col md:flex-row border border-slate-100">
+                                <div className={`md:w-5/12 bg-gradient-to-br ${victories[step-1].color} flex flex-col items-center justify-center p-12 text-center`}>
+                                    <Icon name={victories[step-1].icon} className={`w-32 h-32 ${victories[step-1].textColor} mb-6`} />
+                                    <h2 className="text-3xl font-bold text-slate-900">{victories[step-1].opponent}</h2>
+                                    <span className="mt-2 text-sm font-bold opacity-50 uppercase tracking-widest text-slate-600">Victory {step}</span>
                                 </div>
-                                <div className="md:w-1/2 p-8 flex flex-col justify-between">
-                                    <div className="space-y-4">
-                                        <div className="flex items-center space-x-2 text-amber-600 font-bold uppercase tracking-widest text-xs">
-                                            <Icon name={victories[step-1].icon} className="w-5 h-5" />
-                                            <span>ชัยชนะที่ {step}</span>
-                                        </div>
-                                        <h3 className="text-2xl font-bold">{victories[step-1].title}</h3>
-                                        <p className="bg-amber-50 p-4 rounded-xl italic text-amber-900">"{victories[step-1].pali}"</p>
-                                        <p className="text-slate-600 text-sm">{victories[step-1].story}</p>
-                                        <p className="text-amber-700 font-bold">ข้อคิด: {victories[step-1].lesson}</p>
+                                <div className="md:w-7/12 p-10 md:p-16 flex flex-col justify-between space-y-6">
+                                    <div className="space-y-6">
+                                        <h3 className="text-3xl font-bold text-slate-900 font-serif">{victories[step-1].title}</h3>
+                                        <div className="bg-amber-50 p-6 rounded-2xl border-l-8 border-amber-400 italic text-amber-900 text-lg">"{victories[step-1].pali}"</div>
+                                        <p className="text-slate-600 leading-relaxed text-lg"><span className="font-bold text-slate-800">เรื่องราว:</span> {victories[step-1].story}</p>
+                                        <p className="text-amber-800 font-bold text-lg bg-amber-100/50 inline-block px-4 py-2 rounded-lg italic">💡 ข้อคิด: {victories[step-1].lesson}</p>
                                     </div>
-                                    <button onClick={() => goToStep(step + 1)} className="mt-6 py-3 bg-amber-600 text-white rounded-xl font-bold flex items-center justify-center space-x-2">
-                                        <span>{step === 8 ? "รับอานิสงส์" : "บทถัดไป"}</span>
-                                        <Icon name="chevron-right" className="w-5 h-5" />
-                                    </button>
+                                    <div className="flex items-center justify-between pt-6 border-t border-slate-100">
+                                        <div className="flex gap-2">
+                                            {[1,2,3,4,5,6,7,8].map(i => (
+                                                <div key={i} className={`h-2 rounded-full transition-all ${i === step ? 'w-8 bg-amber-500' : 'w-2 bg-slate-200'}`}></div>
+                                            ))}
+                                        </div>
+                                        <button onClick={() => goTo(step + 1)} className="px-8 py-4 bg-amber-600 text-white rounded-2xl font-bold flex items-center gap-2 hover:bg-amber-700 transition-all">
+                                            <span>{step === 8 ? "รับอานิสงส์" : "บทถัดไป"}</span>
+                                            <Icon name="chevron-right" className="w-5 h-5" />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         )}
-
                         {step === 9 && (
-                            <div className="text-center bg-white p-12 rounded-[3rem] shadow-2xl border border-amber-100 space-y-6">
-                                <Icon name="sparkles" className="w-16 h-16 text-amber-600 mx-auto" />
-                                <h2 className="text-4xl font-bold">อานิสสังสคาถา</h2>
-                                <p className="text-xl text-amber-800 italic leading-relaxed">"ผู้ใดระลึกถึงชัยชนะ ๘ ประการนี้เป็นประจำ... <br/> ผู้นั้นจะพ้นจากอุปสรรคและประสบแต่ความสุข"</p>
-                                <button onClick={() => goToStep(0)} className="px-8 py-3 bg-slate-100 text-slate-600 rounded-full font-bold hover:bg-slate-200 transition-colors">กลับหน้าแรก</button>
+                            <div className="text-center bg-white p-12 md:p-20 rounded-[4rem] shadow-2xl border-t-8 border-amber-500 space-y-8">
+                                <Icon name="sparkles" className="w-20 h-20 text-amber-500 mx-auto" />
+                                <h2 className="text-5xl font-bold font-serif">อานิสสังสคาถา</h2>
+                                <p className="text-2xl text-amber-800 italic leading-relaxed font-serif">"ผู้ใดระลึกถึงชัยชนะ ๘ ประการนี้เป็นประจำ <br /> จะพ้นจากอุปสรรคและประสบความสุข"</p>
+                                <button onClick={() => goTo(0)} className="px-10 py-4 bg-slate-100 text-slate-600 rounded-full font-bold hover:bg-slate-200 transition-all">กลับหน้าแรก</button>
                             </div>
                         )}
                     </div>
                 </div>
             );
         }
-
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
